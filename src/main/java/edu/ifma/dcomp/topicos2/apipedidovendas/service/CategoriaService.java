@@ -21,14 +21,18 @@ public class CategoriaService {
 
 
     Optional<Categoria> buscaPor(String nome) {
-
-        return Optional.ofNullable( categoriaRepository.findByNome(nome ) );
+        return Optional.ofNullable(
+                categoriaRepository.findByNome(nome ) );
     }
 
 
+    public Categoria buscaPor(Integer id) {
+        Optional<Categoria> optionalCategoria = categoriaRepository.findById(id);
+        return optionalCategoria.orElse(null);
+    }
+
     @Transactional
     public void salva(Categoria categoria ) {
-
         this.categoriaRepository.save(categoria );
     }
 
@@ -36,7 +40,6 @@ public class CategoriaService {
 
     @Transactional(readOnly = true)
     public List<Categoria> obterTodasCategorias() {
-
         return categoriaRepository.findAll();
     }
 }
