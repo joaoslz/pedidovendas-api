@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public class CategoriaService {
 
     @Autowired
     public CategoriaService(CategoriaRepository categoriaRepository) {
-        this.categoriaRepository = categoriaRepository;
+      this.categoriaRepository = categoriaRepository;
     }
 
 
@@ -27,19 +28,27 @@ public class CategoriaService {
 
 
     public Categoria buscaPor(Integer id) {
-        Optional<Categoria> optionalCategoria = categoriaRepository.findById(id);
+        Optional<Categoria> optionalCategoria = categoriaRepository.findById(id );
         return optionalCategoria.orElse(null);
     }
 
+/*
     @Transactional
     public void salva(Categoria categoria ) {
         this.categoriaRepository.save(categoria );
     }
+*/
 
+    @Transactional
+    public Categoria salva(Categoria categoria ) {
+       return this.categoriaRepository.save(categoria );
+    }
 
 
     @Transactional(readOnly = true)
     public List<Categoria> obterTodasCategorias() {
         return categoriaRepository.findAll();
+        //return new ArrayList<>();
     }
+
 }
