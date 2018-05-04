@@ -6,6 +6,7 @@ import edu.ifma.dcomp.topicos2.apipedidovendas.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -104,6 +105,7 @@ public class CategoriaController {
         if (categorias.isEmpty() ) {
             //return ResponseEntity.notFound().build();
             return ResponseEntity.noContent().build();
+
         } else {
             return ResponseEntity.ok(categorias );
 
@@ -114,10 +116,13 @@ public class CategoriaController {
 /*
     @GetMapping
     public List<Categoria> listaCategorias() {
-
         return categoriaService.obterTodasCategorias();
     }*/
 
 
+    @GetMapping("/{id}")
+    public Categoria buscaPor(@PathVariable Integer id ) {
+        return categoriaService.buscaPor(id );
+    }
 
 }

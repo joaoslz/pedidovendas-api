@@ -1,6 +1,8 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Categoria {
@@ -8,6 +10,9 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotNull
+    @Size(min = 3, max = 30)
     private String nome;
 
 
