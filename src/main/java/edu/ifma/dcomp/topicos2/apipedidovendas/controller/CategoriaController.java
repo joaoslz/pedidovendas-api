@@ -29,7 +29,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> cria(@RequestBody Categoria categoria, HttpServletResponse response) {
+    public ResponseEntity<Categoria> cria(@Validated @RequestBody Categoria categoria, HttpServletResponse response) {
 
         Categoria categoriaSalva = categoriaService.salva(categoria);
 
@@ -43,59 +43,6 @@ public class CategoriaController {
 
         return  ResponseEntity.created(uri).body(categoriaSalva );
     }
-
-
-/*
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Categoria cria(@RequestBody Categoria categoria, HttpServletResponse response) {
-
-        Categoria categoriaSalva = categoriaService.salva(categoria);
-
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequestUri()
-                .path("/{id}")
-                .buildAndExpand(categoriaSalva.getId())
-                .toUri();
-
-        response.setHeader("Location", uri.toString() );
-
-        return categoriaSalva;
-    }*/
-
-
-/*
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void cria(@RequestBody Categoria categoria, HttpServletResponse response) {
-
-        Categoria categoriaSalva = categoriaService.salva(categoria);
-
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequestUri()
-                .path("/{id}")
-                .buildAndExpand(categoriaSalva.getId())
-                .toUri();
-
-        response.setHeader("Location", uri.toString() );
-    }
-*/
-
-/*
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void cria(@RequestBody Categoria categoria) {
-        categoriaService.salva(categoria );
-    }
-*/
-
-/*
-    @PostMapping
-    public void cria(@RequestBody Categoria categoria) {
-        categoriaService.salva(categoria );
-    }
-
-*/
 
     @GetMapping
     public ResponseEntity<?> listaCategorias() {
@@ -113,16 +60,16 @@ public class CategoriaController {
 
     }
 
-/*
-    @GetMapping
-    public List<Categoria> listaCategorias() {
-        return categoriaService.obterTodasCategorias();
-    }*/
-
-
     @GetMapping("/{id}")
     public Categoria buscaPor(@PathVariable Integer id ) {
         return categoriaService.buscaPor(id );
+    }
+
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public @ResponseBody void excluir(@PathVariable Integer id) {
+        categoriaService.excluir(id );
     }
 
 }

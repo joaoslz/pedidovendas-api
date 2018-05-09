@@ -15,7 +15,6 @@ public class Categoria {
     @Size(min = 3, max = 30)
     private String nome;
 
-
     public Integer getId() {
         return id;
     }

@@ -51,4 +51,8 @@ public class CategoriaService {
         //return new ArrayList<>();
     }
 
+    @Transactional
+    public void excluir(Integer id) {
+        categoriaRepository.deleteById(id );
+    }
 }
