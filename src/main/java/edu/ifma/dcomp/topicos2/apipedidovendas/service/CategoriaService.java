@@ -2,7 +2,9 @@ package edu.ifma.dcomp.topicos2.apipedidovendas.service;
 
 import edu.ifma.dcomp.topicos2.apipedidovendas.model.Categoria;
 import edu.ifma.dcomp.topicos2.apipedidovendas.repository.CategoriaRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +30,10 @@ public class CategoriaService {
 
 
     public Categoria buscaPor(Integer id) {
+
         Optional<Categoria> optionalCategoria = categoriaRepository.findById(id );
-        return optionalCategoria.orElse(null);
+
+        return optionalCategoria.orElse(null );
     }
 
 /*
@@ -48,11 +52,26 @@ public class CategoriaService {
     @Transactional(readOnly = true)
     public List<Categoria> obterTodasCategorias() {
         return categoriaRepository.findAll();
-        //return new ArrayList<>();
     }
 
     @Transactional
     public void excluir(Integer id) {
         categoriaRepository.deleteById(id );
+    }
+
+    @Transactional
+    public Categoria atualiza(Integer id, Categoria categoria) {
+        Categoria categoriaManager = this.buscaPor(id );
+
+        if (categoriaManager == null) {
+
+            throw new EmptyResultDataAccessException(1 );
+        }
+
+        BeanUtils.copyProperties(categoria, categoriaManager, "id" );
+
+        this.salva(categoriaManager );
+
+        return categoriaManager;
     }
 }

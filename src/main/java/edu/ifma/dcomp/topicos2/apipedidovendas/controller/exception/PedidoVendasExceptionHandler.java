@@ -31,11 +31,14 @@ public class PedidoVendasExceptionHandler extends ResponseEntityExceptionHandler
     }
 
 
+
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
 
         String mensagem = this.messageSource.getMessage("parametro.invalido", null, LocaleContextHolder.getLocale());
+
+
         String causa = ex.getCause().toString();
 
         return super.handleExceptionInternal (ex, new Erro(mensagem, causa), headers, status, request);
@@ -52,19 +55,6 @@ public class PedidoVendasExceptionHandler extends ResponseEntityExceptionHandler
         return super.handleExceptionInternal(ex, erros, headers, status, request);
     }
 
-    private List<Erro> carregaListaDeErros(BindingResult bindingResult ) {
-        List<Erro> erros = new ArrayList<>();
-
-        bindingResult.getFieldErrors().forEach( fieldError -> {
-
-                    String mensagem = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-                    erros.add( new Erro(mensagem ,fieldError.toString() ) );
-            }
-        );
-        return erros;
-
-    }
-
     @ExceptionHandler({EmptyResultDataAccessException.class})
     // @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
@@ -72,7 +62,22 @@ public class PedidoVendasExceptionHandler extends ResponseEntityExceptionHandler
         String mensagem = messageSource.getMessage("recurso.naoencontrado", null, LocaleContextHolder.getLocale() );
         String  causa = ex.toString();
 
-        return super.handleExceptionInternal(ex, new Erro(mensagem, causa), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        return super.handleExceptionInternal(ex, new Erro(mensagem, causa), new HttpHeaders(),
+                                             HttpStatus.NOT_FOUND, request );
+
+    }
+
+
+    private List<Erro> carregaListaDeErros(BindingResult bindingResult ) {
+        List<Erro> erros = new ArrayList<>();
+
+        bindingResult.getFieldErrors().forEach( fieldError -> {
+
+                    String mensagem = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    erros.add( new Erro(mensagem ,fieldError.toString() ) );
+                }
+        );
+        return erros;
 
     }
 
