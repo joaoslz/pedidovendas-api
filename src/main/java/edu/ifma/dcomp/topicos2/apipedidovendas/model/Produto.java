@@ -1,26 +1,42 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "produto")
 public class Produto implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull
     private String nome;
+
+    @DecimalMin(value = "0.01")
     private BigDecimal preco;
 
-
-/*
     @ManyToMany
-    @JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(na))
+    @JoinTable(name = "produto_categoria",
+               joinColumns = @JoinColumn(name = "produto_id"),
+               inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias = new ArrayList<>();
-*/
+
+
+    public Produto() {  }
+
+    public Produto(@NotNull String nome, BigDecimal preco) {
+        this.nome = nome;
+        this.preco = preco;
+    }
+
 
 
     public Integer getId() {
@@ -47,6 +63,14 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void adiciona(Categoria categoria) {
+        categorias.add(categoria );
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -58,7 +82,15 @@ public class Produto implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getId());
+    }
+
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                '}';
     }
 }

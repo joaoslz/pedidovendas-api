@@ -52,10 +52,8 @@ public class CategoriaController {
 
         if (categorias.isEmpty() ) {
             return ResponseEntity.noContent().build();
-
         } else {
             return ResponseEntity.ok(categorias );
-
         }
     }
 
@@ -68,20 +66,14 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public @ResponseBody void excluir(@PathVariable Integer id) {
-
         categoriaService.excluir(id );
-
     }
 
 
     @PutMapping("/{id}")
     public ResponseEntity<Categoria> atualizar(@PathVariable Integer id,
                                                @Validated @RequestBody Categoria categoria ) {
-
        Categoria categoriaManager = categoriaService.atualiza(id, categoria );
-
-
-        return ResponseEntity.ok(categoriaManager );
-
+       return ResponseEntity.ok(categoriaManager );
     }
 }

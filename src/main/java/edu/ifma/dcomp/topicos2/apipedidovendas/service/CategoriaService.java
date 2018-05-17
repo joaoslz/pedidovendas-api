@@ -30,18 +30,12 @@ public class CategoriaService {
 
 
     public Categoria buscaPor(Integer id) {
-
         Optional<Categoria> optionalCategoria = categoriaRepository.findById(id );
+        return optionalCategoria
+                .orElseThrow( () ->new EmptyResultDataAccessException(1 ) );
 
-        return optionalCategoria.orElse(null );
-    }
 
-/*
-    @Transactional
-    public void salva(Categoria categoria ) {
-        this.categoriaRepository.save(categoria );
     }
-*/
 
     @Transactional
     public Categoria salva(Categoria categoria ) {
