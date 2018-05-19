@@ -1,6 +1,5 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas.controller.exception;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -45,7 +44,6 @@ public class PedidoVendasExceptionHandler extends ResponseEntityExceptionHandler
     }
 
 
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
@@ -56,7 +54,6 @@ public class PedidoVendasExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler({EmptyResultDataAccessException.class})
-    // @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
 
         String mensagem = messageSource.getMessage("recurso.naoencontrado", null, LocaleContextHolder.getLocale() );
@@ -66,6 +63,20 @@ public class PedidoVendasExceptionHandler extends ResponseEntityExceptionHandler
                                              HttpStatus.NOT_FOUND, request );
 
     }
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+
+        String mensagem = messageSource.getMessage("recurso.operacao-nao-permitida", null,
+                                                    LocaleContextHolder.getLocale() );
+
+        String  causa = ex.toString();
+
+
+        return super.handleExceptionInternal(ex, new Erro(mensagem, causa), new HttpHeaders(),
+                HttpStatus.BAD_REQUEST, request );
+    }
+
 
 
     private List<Erro> carregaListaDeErros(BindingResult bindingResult ) {

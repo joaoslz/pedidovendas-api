@@ -73,7 +73,8 @@ public class CategoriaController {
     @PutMapping("/{id}")
     public ResponseEntity<Categoria> atualizar(@PathVariable Integer id,
                                                @Validated @RequestBody Categoria categoria ) {
-       Categoria categoriaManager = categoriaService.atualiza(id, categoria );
+
+        Categoria categoriaManager = categoriaService.atualiza(id, categoria );
        return ResponseEntity.ok(categoriaManager );
     }
 }

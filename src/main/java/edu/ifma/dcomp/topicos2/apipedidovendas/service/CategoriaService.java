@@ -33,8 +33,6 @@ public class CategoriaService {
         Optional<Categoria> optionalCategoria = categoriaRepository.findById(id );
         return optionalCategoria
                 .orElseThrow( () ->new EmptyResultDataAccessException(1 ) );
-
-
     }
 
     @Transactional

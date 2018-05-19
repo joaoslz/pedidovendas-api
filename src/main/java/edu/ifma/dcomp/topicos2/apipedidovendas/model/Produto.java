@@ -23,6 +23,9 @@ public class Produto implements Serializable {
     @DecimalMin(value = "0.01")
     private BigDecimal preco;
 
+    @NotNull
+    private Boolean ativo;
+
     @ManyToMany
     @JoinTable(name = "produto_categoria",
                joinColumns = @JoinColumn(name = "produto_id"),
@@ -36,8 +39,6 @@ public class Produto implements Serializable {
         this.nome = nome;
         this.preco = preco;
     }
-
-
 
     public Integer getId() {
         return id;
@@ -63,11 +64,20 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     public List<Categoria> getCategorias() {
         return categorias;
     }
 
     public void adiciona(Categoria categoria) {
+
         categorias.add(categoria );
     }
 
@@ -82,9 +92,9 @@ public class Produto implements Serializable {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(getId());
     }
-
 
     @Override
     public String toString() {
