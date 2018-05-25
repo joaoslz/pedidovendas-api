@@ -1,15 +1,18 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas.controller;
 
 
+import edu.ifma.dcomp.topicos2.apipedidovendas.controller.event.RecursoCriadoEvent;
 import edu.ifma.dcomp.topicos2.apipedidovendas.model.Produto;
 import edu.ifma.dcomp.topicos2.apipedidovendas.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.List;
 
@@ -19,11 +22,11 @@ public class ProdutoController {
 
     private final ProdutoService produtoService;
 
+
     @Autowired
     public ProdutoController(ProdutoService produtoService) {
         this.produtoService = produtoService;
     }
-
 
     @GetMapping
     public List<Produto> listaDeProdutos() {
@@ -31,8 +34,9 @@ public class ProdutoController {
     }
 
 
+ /*
     @PostMapping
-    public ResponseEntity<?> cria(@Validated @RequestBody Produto produto) {
+    public ResponseEntity<?> cria(@Validated @RequestBody Produto produto ) {
 
         Produto produtoSalvo = produtoService.salva(produto );
 
@@ -43,7 +47,20 @@ public class ProdutoController {
                 .toUri();
 
         return  ResponseEntity.created(uri).body(produtoSalvo );
+    }
+*/
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
+    @PostMapping
+    public ResponseEntity<?> cria(@Validated @RequestBody Produto produto, HttpServletResponse response) {
+
+        Produto produtoSalvo = produtoService.salva(produto );
+        publisher.publishEvent(new RecursoCriadoEvent(this, response, produtoSalvo.getId() ));
+
+        return  ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(produtoSalvo );
     }
 
     @PutMapping("/{id}")

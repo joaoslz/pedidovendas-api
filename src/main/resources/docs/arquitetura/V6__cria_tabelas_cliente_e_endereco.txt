@@ -30,3 +30,6 @@ alter table endereco
    add constraint FK8s7ivtl4foyhrfam9xqom73n9
    foreign key (cliente_id)
    references cliente (id);
+
+
+   

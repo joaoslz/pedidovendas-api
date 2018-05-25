@@ -30,11 +30,8 @@ public class ProdutoService {
        this.categoriaRepository = categoriaRepository;
    }
 
-
-
    @Transactional
     public Produto salva(Produto produto) {
-
        validaCategorias( produto.getCategorias() );
        return produtoRepository.save(produto );
     }
@@ -53,7 +50,7 @@ public class ProdutoService {
                 }
 
                 Optional<Categoria> optional = categoriaRepository.findById(id);
-                categoria = optional.orElseThrow(() -> new IllegalArgumentException("Categoria Inválida " + id));
+                categoria = optional.orElseThrow( () -> new IllegalArgumentException("Categoria Inválida " + id));
             });
         }
     }
@@ -66,17 +63,15 @@ public class ProdutoService {
     }
 
     public Produto buscaPor(Integer id) {
-
        return produtoRepository.findById(id )
                                .orElseThrow( () ->new EmptyResultDataAccessException(1 ) );
     }
 
     @Transactional
     public Produto atualiza(Integer id, Produto produto) {
+
         Produto produtoManager = this.buscaPor(id );
-
         BeanUtils.copyProperties(produto, produtoManager, "id" );
-
         this.salva(produtoManager );
 
         return produtoManager;

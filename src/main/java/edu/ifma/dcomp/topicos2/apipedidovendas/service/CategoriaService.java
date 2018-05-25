@@ -24,16 +24,18 @@ public class CategoriaService {
 
 
     Optional<Categoria> buscaPor(String nome) {
-        return Optional.ofNullable(
-                categoriaRepository.findByNome(nome ) );
+        return Optional.ofNullable( categoriaRepository.findByNome(nome) );
     }
 
 
     public Categoria buscaPor(Integer id) {
+
         Optional<Categoria> optionalCategoria = categoriaRepository.findById(id );
+
         return optionalCategoria
                 .orElseThrow( () ->new EmptyResultDataAccessException(1 ) );
     }
+
 
     @Transactional
     public Categoria salva(Categoria categoria ) {
@@ -46,22 +48,22 @@ public class CategoriaService {
         return categoriaRepository.findAll();
     }
 
+
     @Transactional
     public void excluir(Integer id) {
         categoriaRepository.deleteById(id );
     }
+
 
     @Transactional
     public Categoria atualiza(Integer id, Categoria categoria) {
         Categoria categoriaManager = this.buscaPor(id );
 
         if (categoriaManager == null) {
-
             throw new EmptyResultDataAccessException(1 );
         }
 
         BeanUtils.copyProperties(categoria, categoriaManager, "id" );
-
         this.salva(categoriaManager );
 
         return categoriaManager;

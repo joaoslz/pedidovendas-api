@@ -27,7 +27,6 @@ public class CategoriaController {
 
     @Autowired
     public CategoriaController(CategoriaService categoriaService) {
-
         this.categoriaService = categoriaService;
     }
 
@@ -66,6 +65,7 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public @ResponseBody void excluir(@PathVariable Integer id) {
+
         categoriaService.excluir(id );
     }
 

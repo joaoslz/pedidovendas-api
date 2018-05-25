@@ -15,7 +15,8 @@ import java.math.BigDecimal;
 public class ApiPedidoVendasApplication {
 
    public static void main(String[] args) {
-        SpringApplication.run(ApiPedidoVendasApplication.class, args);
+
+       SpringApplication.run(ApiPedidoVendasApplication.class, args);
     }
 
 }

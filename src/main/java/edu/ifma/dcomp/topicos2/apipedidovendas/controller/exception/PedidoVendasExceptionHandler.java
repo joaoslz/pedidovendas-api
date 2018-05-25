@@ -84,7 +84,7 @@ public class PedidoVendasExceptionHandler extends ResponseEntityExceptionHandler
 
         bindingResult.getFieldErrors().forEach( fieldError -> {
 
-                    String mensagem = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    String mensagem = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale() );
                     erros.add( new Erro(mensagem ,fieldError.toString() ) );
                 }
         );
