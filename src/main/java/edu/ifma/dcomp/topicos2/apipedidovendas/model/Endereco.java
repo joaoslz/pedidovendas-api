@@ -1,6 +1,11 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity
@@ -12,14 +17,19 @@ public class Endereco {
     private Integer id;
 
     private String logradouro;
+
     private String numero;
     private String complemento;
+
     private String cidade;
+
     private String uf;
+
     private String cep;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonBackReference
     private Cliente cliente;
 
     public Integer getId() {

@@ -1,5 +1,7 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -29,13 +31,16 @@ public class Cliente {
     @Email
     private String email;
 
+    @NotEmpty
     @Column(name = "doc_receita_federal")
     private String documentoReceitaFederal;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private TipoPessoa tipo;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Endereco> enderecos = new ArrayList<>();
 
     public Integer getId() {
