@@ -24,19 +24,21 @@ public class ProdutoService {
    private final ProdutoRepository produtoRepository;
    private final CategoriaRepository categoriaRepository;
 
+   private final GenericoService<Produto> genericoService;
+
    @Autowired
    public ProdutoService(ProdutoRepository produtoRepository, CategoriaRepository categoriaRepository) {
        this.produtoRepository = produtoRepository;
        this.categoriaRepository = categoriaRepository;
+
+       genericoService = new GenericoService<Produto>(produtoRepository );
    }
 
    @Transactional
     public Produto salva(Produto produto) {
        validaCategorias( produto.getCategorias() );
-       return produtoRepository.save(produto );
+       return genericoService.salva(produto );
     }
-
-
 
     private void validaCategorias(List<Categoria> categorias) {
         if (categorias !=null && !categorias.isEmpty() ) {
@@ -58,29 +60,27 @@ public class ProdutoService {
 
     @Transactional(readOnly = true)
     public List<Produto> todos() {
-        return produtoRepository.findAll();
+        return genericoService.buscaTodasAsEntities();
 
-    }
-
-    public Produto buscaPor(Integer id) {
-       return produtoRepository.findById(id )
-                               .orElseThrow( () ->new EmptyResultDataAccessException(1 ) );
     }
 
     @Transactional
     public Produto atualiza(Integer id, Produto produto) {
-
-        Produto produtoManager = this.buscaPor(id );
-        BeanUtils.copyProperties(produto, produtoManager, "id" );
-        this.salva(produtoManager );
-
-        return produtoManager;
+       return genericoService.atualiza(id, produto);
     }
 
     @Transactional
     public void atualizaAtributoAtivo(Integer id, Boolean ativo) {
-       Produto produto = this.buscaPor(id );
+       Produto produto = genericoService.buscaPor(id );
        produto.setAtivo(ativo );
        produtoRepository.save(produto );
     }
+
+ /*
+    public Produto buscaPor(Integer id) {
+       return produtoRepository.findById(id )
+                               .orElseThrow( () ->new EmptyResultDataAccessException(1 ) );
+    }
+*/
+
 }
