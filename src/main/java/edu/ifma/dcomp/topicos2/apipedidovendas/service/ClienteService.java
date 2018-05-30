@@ -16,9 +16,13 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
+    private final GenericoService<Cliente> genericoService;
+
     @Autowired
     public ClienteService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
+
+        this.genericoService = new GenericoService<Cliente>(clienteRepository );
     }
 
 
@@ -28,29 +32,28 @@ public class ClienteService {
 
 
     public Cliente buscaPor(Integer id) {
-
-        Optional<Cliente> optionalCliente = clienteRepository.findById(id );
-
-        return optionalCliente
-                .orElseThrow( () ->new EmptyResultDataAccessException(1 ) );
+        // ...
+        return this.genericoService.buscaPor(id );
     }
 
 
     @Transactional
     public Cliente salva(Cliente cliente ) {
-       return this.clienteRepository.save(cliente );
+       return this.genericoService.salva(cliente );
     }
 
 
     @Transactional(readOnly = true)
     public List<Cliente> obterTodosClientes() {
-        return clienteRepository.findAll();
+
+        return genericoService.buscaTodasAsEntities();
     }
 
 
     @Transactional
     public void excluir(Integer id) {
-        clienteRepository.deleteById(id );
+
+        this.genericoService.excluir(id );
     }
 
 

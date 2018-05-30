@@ -31,7 +31,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> cria(@Validated @RequestBody Categoria categoria, HttpServletResponse response) {
+    public ResponseEntity<Categoria> cria(@Validated @RequestBody Categoria categoria ) {
 
         Categoria categoriaSalva = categoriaService.salva(categoria);
 

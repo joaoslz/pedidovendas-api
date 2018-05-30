@@ -39,9 +39,21 @@ public class Cliente {
     @Enumerated(EnumType.STRING)
     private TipoPessoa tipo;
 
+
+    // tutorial: https://en.wikibooks.org/wiki/Java_Persistence/ElementCollection
+    @ElementCollection
+    @CollectionTable(
+            name = "telefones",
+            joinColumns = @JoinColumn(name = "cliente_id")
+    )
+    @Column(name = "numero")
+    private List<String> telefones;
+
+
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Endereco> enderecos = new ArrayList<>();
+
 
     public Integer getId() {
         return id;

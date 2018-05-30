@@ -56,6 +56,7 @@ public class ProdutoController {
     public ResponseEntity<?> cria(@Validated @RequestBody Produto produto, HttpServletResponse response) {
 
         Produto produtoSalvo = produtoService.salva(produto );
+
         publisher.publishEvent(new RecursoCriadoEvent(this, response, produtoSalvo.getId() ));
 
         return  ResponseEntity
