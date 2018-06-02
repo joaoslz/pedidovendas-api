@@ -1,15 +1,13 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "cliente")
@@ -31,9 +29,11 @@ public class Cliente {
     @Email
     private String email;
 
+
     @NotEmpty
     @Column(name = "doc_receita_federal")
     private String documentoReceitaFederal;
+
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -44,15 +44,20 @@ public class Cliente {
     @ElementCollection
     @CollectionTable(
             name = "telefones",
-            joinColumns = @JoinColumn(name = "cliente_id")
-    )
+            joinColumns = @JoinColumn(name = "cliente_id") )
     @Column(name = "numero")
-    private List<String> telefones;
+    private Set<String> telefones = new LinkedHashSet<>();
+    //private List<String> telefones;
 
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     @JsonManagedReference
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
+
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos = new ArrayList<>();
 
 
     public Integer getId() {
