@@ -37,7 +37,6 @@ public class PedidoVendasExceptionHandler extends ResponseEntityExceptionHandler
 
         String mensagem = this.messageSource.getMessage("parametro.invalido", null, LocaleContextHolder.getLocale());
 
-
         String causa = ex.getCause().toString();
 
         return super.handleExceptionInternal (ex, new Erro(mensagem, causa), headers, status, request);

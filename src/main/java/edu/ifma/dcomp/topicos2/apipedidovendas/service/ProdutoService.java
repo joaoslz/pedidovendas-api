@@ -5,10 +5,12 @@ import edu.ifma.dcomp.topicos2.apipedidovendas.model.Categoria;
 import edu.ifma.dcomp.topicos2.apipedidovendas.model.Produto;
 import edu.ifma.dcomp.topicos2.apipedidovendas.repository.CategoriaRepository;
 import edu.ifma.dcomp.topicos2.apipedidovendas.repository.ProdutoRepository;
+import edu.ifma.dcomp.topicos2.apipedidovendas.repository.filter.ProdutoFiltro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,9 +59,19 @@ public class ProdutoService  {
 
     }
 
+    public List<Produto> buscaPor(String nome) {
+        return
+                produtoRepository.findByNomeContaining(nome )
+                .orElse(new ArrayList<>() );
+    }
+
+    public List<Produto> pesquisa(ProdutoFiltro filtro) {
+        return produtoRepository.filtrar(filtro );
+    }
+
+
     @Transactional
     public Produto atualiza(Integer id, Produto produto) {
-
        return genericoService.atualiza(produto, id);
     }
 

@@ -3,6 +3,7 @@ package edu.ifma.dcomp.topicos2.apipedidovendas.controller;
 
 import edu.ifma.dcomp.topicos2.apipedidovendas.controller.event.RecursoCriadoEvent;
 import edu.ifma.dcomp.topicos2.apipedidovendas.model.Produto;
+import edu.ifma.dcomp.topicos2.apipedidovendas.repository.filter.ProdutoFiltro;
 import edu.ifma.dcomp.topicos2.apipedidovendas.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,49 +21,45 @@ import java.util.List;
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 
-    private final ProdutoService produtoService;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
+    private final ProdutoService produtoService;
 
     @Autowired
     public ProdutoController(ProdutoService produtoService) {
         this.produtoService = produtoService;
     }
 
+/*
     @GetMapping
-    public List<Produto> listaDeProdutos() {
+    public List<Produto> todosProdutos( ) {
         return produtoService.todos();
     }
-
-
- /*
-    @PostMapping
-    public ResponseEntity<?> cria(@Validated @RequestBody Produto produto ) {
-
-        Produto produtoSalvo = produtoService.salva(produto );
-
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequestUri()
-                .path("/{id}")
-                .buildAndExpand(produtoSalvo.getId() )
-                .toUri();
-
-        return  ResponseEntity.created(uri).body(produtoSalvo );
-    }
 */
-    @Autowired
-    private ApplicationEventPublisher publisher;
+
+
+    @GetMapping
+    public List<Produto> pesquisar(ProdutoFiltro filtro) {
+        return produtoService.pesquisa(filtro);
+    }
+
+
+    @GetMapping("/buscapornome")
+    public List<Produto> buscaPeloNome(@RequestParam String nome ) {
+        return produtoService.buscaPor(nome );
+    }
 
     @PostMapping
     public ResponseEntity<?> cria(@Validated @RequestBody Produto produto, HttpServletResponse response) {
 
         Produto produtoSalvo = produtoService.salva(produto );
-
         publisher.publishEvent(new RecursoCriadoEvent(this, response, produtoSalvo.getId() ));
-
         return  ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(produtoSalvo );
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Produto> atualiza(@PathVariable Integer id,
@@ -70,6 +67,7 @@ public class ProdutoController {
         Produto categoriaManager = produtoService.atualiza(id, produto );
         return ResponseEntity.ok(categoriaManager );
     }
+
 
 
     @PutMapping("/{id}/ativo")
