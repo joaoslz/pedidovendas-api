@@ -21,10 +21,15 @@ public class Produto implements Serializable {
     private String nome;
 
     @DecimalMin(value = "0.01")
-    private BigDecimal preco;
+    @Column(name = "preco_atual")
+    private BigDecimal precoAtual;
 
     @NotNull
     private Boolean ativo;
+
+    @Transient
+    @NotNull @Min(0)
+    private Integer quantidadeEstoque;
 
     @ManyToMany
     @JoinTable(name = "produto_categoria",
@@ -37,7 +42,7 @@ public class Produto implements Serializable {
 
     public Produto(@NotNull String nome, BigDecimal preco) {
         this.nome = nome;
-        this.preco = preco;
+        this.precoAtual = preco;
     }
 
     public Integer getId() {
@@ -56,29 +61,57 @@ public class Produto implements Serializable {
         this.nome = nome;
     }
 
-    public BigDecimal getPreco() {
-        return preco;
+    public BigDecimal getPrecoAtual() {
+        return precoAtual;
     }
 
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
+    public void setPrecoAtual(BigDecimal precoAtual) {
+        this.precoAtual = precoAtual;
     }
 
     public Boolean getAtivo() {
         return ativo;
     }
 
+
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
+
+
+    public Integer getQuantidadeEstoque() {
+        return quantidadeEstoque;
+    }
+
+    public void setQuantidadeEstoque(Integer quantidadeEstoque) {
+        this.quantidadeEstoque = quantidadeEstoque;
+    }
+
 
     public List<Categoria> getCategorias() {
         return categorias;
     }
 
-    public void adiciona(Categoria categoria) {
 
+    public void adiciona(Categoria categoria) {
         categorias.add(categoria );
+    }
+
+    public void baixaEstoque(Integer quantidade)  {
+        int novaQuantidade = this.getQuantidadeEstoque() - quantidade;
+
+        if (novaQuantidade < 0) {
+            throw new IllegalArgumentException
+                    ("Não há disponibilidade no estoque de "
+                     + quantidade + " itens do produto " + this.getNome() + "."
+                     + "Temos disponível apenas " + this.quantidadeEstoque + "Itens" );
+        }
+
+        this.setQuantidadeEstoque(novaQuantidade );
+    }
+
+    public void adicionaEstoque(@Min(1) Integer quantidade) {
+        this.setQuantidadeEstoque(this.getQuantidadeEstoque() + quantidade);
     }
 
 

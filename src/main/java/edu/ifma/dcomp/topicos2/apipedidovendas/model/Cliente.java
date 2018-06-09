@@ -2,6 +2,7 @@ package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -37,7 +38,7 @@ public class Cliente {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private TipoPessoa tipo;
+    private TipoCliente tipo;
 
 
     // tutorial: https://en.wikibooks.org/wiki/Java_Persistence/ElementCollection
@@ -50,7 +51,6 @@ public class Cliente {
     //private List<String> telefones;
 
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
@@ -89,14 +89,14 @@ public class Cliente {
     }
 
     public void setDocumentoReceitaFederal(String documentoReceitaFederal) {
-        this.documentoReceitaFederal = documentoReceitaFederal;
+            this.documentoReceitaFederal = documentoReceitaFederal;
     }
 
-    public TipoPessoa getTipo() {
+    public TipoCliente getTipo() {
         return tipo;
     }
 
-    public void setTipo(TipoPessoa tipo) {
+    public void setTipo(TipoCliente tipo) {
         this.tipo = tipo;
     }
 

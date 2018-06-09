@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,28 +30,25 @@ public class PedidoVendasExceptionHandler extends ResponseEntityExceptionHandler
         this.messageSource = messageSource;
     }
 
-
-
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
 
         String mensagem = this.messageSource.getMessage("parametro.invalido", null, LocaleContextHolder.getLocale());
-
         String causa = ex.getCause().toString();
 
         return super.handleExceptionInternal (ex, new Erro(mensagem, causa), headers, status, request);
     }
 
-
+    // Erros do BeanValidation
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
-
         List<Erro> erros = carregaListaDeErros(ex.getBindingResult() );
-
         return super.handleExceptionInternal(ex, erros, headers, status, request);
     }
+
 
     @ExceptionHandler({EmptyResultDataAccessException.class})
     public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {

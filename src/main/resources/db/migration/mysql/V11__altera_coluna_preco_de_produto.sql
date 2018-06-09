@@ -1,0 +1,1 @@
+ALTER TABLE produto CHANGE COLUMN preco preco_atual DECIMAL(10,2) NULL DEFAULT NULL ;

@@ -18,3 +18,6 @@ CREATE TABLE pedido (
 
 INSERT INTO pedido (instante_criacao, observacoes, valor_frete, cliente_id, entrega_logradouro, entrega_numero, entrega_cep)
 VALUES ('2018-05-31 13:50:0059', 'Uma observacoes aqui!', '50', '1', 'Rua Sem fim', '10', '65000000');
+
+INSERT INTO pedido (instante_criacao, observacoes, valor_frete, cliente_id, entrega_logradouro, entrega_numero, entrega_cep)
+VALUES ('2018-06-02 10:40:0059', 'Uma observacoes aqui!', '60', '2', 'Rua da Esperança', '15', '65000100');

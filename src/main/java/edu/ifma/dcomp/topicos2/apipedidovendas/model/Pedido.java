@@ -2,9 +2,11 @@ package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -19,29 +21,25 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonIgnore
     @Column(name = "instante_criacao")
-    @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
     private LocalDateTime instanteCriacao;
 
     @Column(columnDefinition = "text")
     private String observacoes;
 
-    @Transient
-    private BigDecimal valorTotal;
-
 
     @Column(name = "valor_desconto")
     private BigDecimal valorDesconto;
 
-
+    @NotNull
     @Column(name = "valor_frete")
     private BigDecimal valorFrete;
 
-    @JsonManagedReference
     @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
     private Pagamento pagamento;
 
-    @JsonManagedReference
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
@@ -54,6 +52,12 @@ public class Pedido {
 
     public Set<ItemPedido> getItens() {
         return itens;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        this.instanteCriacao = LocalDateTime.now();
+
     }
 
     public void setItens(Set<ItemPedido> itens) {
@@ -72,24 +76,12 @@ public class Pedido {
         return instanteCriacao;
     }
 
-    public void setInstanteCriacao(LocalDateTime instanteCriacao) {
-        this.instanteCriacao = instanteCriacao;
-    }
-
     public String getObservacoes() {
         return observacoes;
     }
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
-    }
-
-    public BigDecimal getValorTotal() {
-        return valorTotal;
-    }
-
-    public void setValorTotal(BigDecimal valorTotal) {
-        this.valorTotal = valorTotal;
     }
 
     public BigDecimal getValorDesconto() {
@@ -144,5 +136,20 @@ public class Pedido {
     public int hashCode() {
 
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", instanteCriacao=" + instanteCriacao +
+                ", observacoes='" + observacoes + '\'' +
+                ", valorDesconto=" + valorDesconto +
+                ", valorFrete=" + valorFrete +
+                ", pagamento=" + pagamento +
+                ", cliente=" + cliente +
+                ", enderecoEntrega=" + enderecoEntrega +
+                ", itens=" + itens +
+                '}';
     }
 }

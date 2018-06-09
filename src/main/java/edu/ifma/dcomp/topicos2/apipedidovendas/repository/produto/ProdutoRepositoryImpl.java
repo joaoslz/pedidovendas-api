@@ -32,7 +32,6 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQuery {
         // 2. clausula from e joins
         Root<Produto> produtoRoot = cq.from(Produto.class );
 
-
         // 3. adiciona as restrições (os predicados) que serão passadas na clausula where
         Predicate[] restricoes = this.criaRestricoes(filtro, cb, produtoRoot  );
 
@@ -50,28 +49,30 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQuery {
 
     private Predicate[] criaRestricoes(ProdutoFiltro filtro,
                                        CriteriaBuilder cb,
-                                       Root<Produto> fromProduto) {
+                                       Root<Produto> produtoRoot) {
+
         List<Predicate> predicates = new ArrayList<>();
 
         if ( !StringUtils.isEmpty(filtro.getNome()) ) {
-           predicates.add(cb.like(cb.lower(fromProduto.get("nome")),
-                                 "%" + filtro.getNome().toLowerCase() + "%" ));
+           // where nome like %asdfg%
+           predicates.add(cb.like(produtoRoot.get("nome"),
+                                 "%" + filtro.getNome() + "%" ));
         }
 
         if ( filtro.getPrecoDe() != null ) {
-            predicates.add( cb.ge( fromProduto.get("preco"), filtro.getPrecoDe() ));
+            predicates.add( cb.ge( produtoRoot.get("precoAtual"), filtro.getPrecoDe() ));
        }
 
         if( filtro.getPrecoAte()  != null ) {
-            predicates.add( cb.le( fromProduto.get("preco"), filtro.getPrecoAte() ));
+            predicates.add( cb.le( produtoRoot.get("precoAtual"), filtro.getPrecoAte() ));
         }
 
         if (filtro.getAtivo() != null ) {
-            predicates.add( cb.equal( fromProduto.get("ativo"), filtro.getAtivo() ));
+            predicates.add( cb.equal( produtoRoot.get("ativo"), filtro.getAtivo() ));
         }
         if (filtro.getCategoriaId() != null) {
             // antes faz o join com categorias
-            Path<Integer> categoriaPath = fromProduto.join("categorias").<Integer>get("id");
+            Path<Integer> categoriaPath = produtoRoot.join("categorias").<Integer>get("id");
 
             // semelhante a clausula "on" com o critério de junção
             predicates.add ( cb.equal(categoriaPath, filtro.getCategoriaId() ) );

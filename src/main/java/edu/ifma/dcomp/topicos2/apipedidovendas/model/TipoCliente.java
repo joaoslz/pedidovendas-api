@@ -1,13 +1,14 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
-public enum TipoPessoa {
+public enum TipoCliente {
 
     FISICA("Pessoa Física"),
     JURIDICA("Pessoa Jurídica");
 
+
     private String tipo;
 
-    private TipoPessoa(String tipo) {
+    private TipoCliente(String tipo) {
         this.tipo = tipo;
     }
 

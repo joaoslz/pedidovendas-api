@@ -13,5 +13,10 @@ CREATE TABLE item_pedido (
 
 )ENGINE=InnoDB;
 
-INSERT INTO item_pedido (pedido_id, produto_id, valor, quantidade, desconto) VALUES (1, 1, 300.00, 2, 0.00);
+INSERT INTO item_pedido (pedido_id, produto_id, valor, quantidade, desconto) VALUES (1, 1, 300.00, 3, 0.00);
+INSERT INTO item_pedido (pedido_id, produto_id, valor, quantidade, desconto) VALUES (1, 2, 300.00, 1, 5.00);
+INSERT INTO item_pedido (pedido_id, produto_id, valor, quantidade, desconto) VALUES (1, 3, 300.00, 2, 3.00);
+
+
+INSERT INTO item_pedido (pedido_id, produto_id, valor, quantidade, desconto) VALUES (2, 1, 300.00, 2, 1.00);
 

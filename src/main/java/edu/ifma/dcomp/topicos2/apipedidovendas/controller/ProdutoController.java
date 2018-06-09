@@ -31,12 +31,8 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
-/*
-    @GetMapping
-    public List<Produto> todosProdutos( ) {
-        return produtoService.todos();
-    }
-*/
+/*  @GetMapping
+    public List<Produto> todosProdutos( ) {   return produtoService.todos();  } */
 
 
     @GetMapping
@@ -51,10 +47,15 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cria(@Validated @RequestBody Produto produto, HttpServletResponse response) {
+    public ResponseEntity<?> cria(@Validated @RequestBody Produto produto,
+                                  HttpServletResponse response) {
 
         Produto produtoSalvo = produtoService.salva(produto );
-        publisher.publishEvent(new RecursoCriadoEvent(this, response, produtoSalvo.getId() ));
+
+        //vamos usar um evento da aplicação (RecursoCriadoEvent) para adicionar o header_location no cabeçalho da resposta
+
+        publisher.publishEvent( new RecursoCriadoEvent(this, response, produtoSalvo.getId() ));
+
         return  ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(produtoSalvo );

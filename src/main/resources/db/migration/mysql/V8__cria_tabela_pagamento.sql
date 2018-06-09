@@ -21,6 +21,10 @@ CREATE TABLE pagamento_boleto (
   CONSTRAINT fkPedidoIdBoleto FOREIGN KEY (pedido_id) REFERENCES pedido(id)
 )ENGINE=InnoDB;
 
+
 INSERT INTO pagamento(pedido_id, situacao) VALUES (1, 'QUITADO');
 INSERT INTO pagamento_cartao(pedido_id, numero_parcelas) VALUES (1, 3);
+
+INSERT INTO pagamento(pedido_id, situacao) VALUES (2, 'QUITADO');
+INSERT INTO pagamento_boleto(pedido_id, data_vencimento, data_pagamento ) VALUES (2, '2018-06-07', '2018-06-07');
 

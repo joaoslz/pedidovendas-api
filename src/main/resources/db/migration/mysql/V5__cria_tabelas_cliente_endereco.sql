@@ -28,4 +28,4 @@ ENGINE = InnoDB;
 INSERT INTO cliente (nome, email, doc_receita_federal, tipo) VALUES ('Fulano da Silva', 'fulano@email.com', '73543374559', 'FISICA');
 INSERT INTO cliente (nome, email, doc_receita_federal, tipo) VALUES ('Sicrano de Souza', 'sicrano@email.com', '97737410791', 'FISICA');
 
-INSERT INTO endereco (logradouro, numero, complemento, cep, cidade, uf, cliente_id) VALUES ('Rua da esperança', '20', 'Quadra F', '65000000', 'São Luís', 'MA', 1);
+INSERT INTO endereco (logradouro, numero, complemento, cep, cidade, uf, cliente_id) VALUES ('Rua da esperança', '20', 'Quadra F', '65000000', 'São Luís', 'MA', 1);

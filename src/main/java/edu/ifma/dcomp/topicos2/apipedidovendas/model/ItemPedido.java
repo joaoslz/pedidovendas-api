@@ -2,10 +2,9 @@ package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -14,20 +13,35 @@ import java.util.Objects;
 public class ItemPedido {
 
     @EmbeddedId
-    private ItemPedidoPK id;
+    private ItemPedidoPK id = new ItemPedidoPK();
 
+    @Min(value = 1)
     private Integer quantidade;
-    private BigDecimal valor;
+
+    @DecimalMin(value = "0.01")
+    private BigDecimal preco;
+
+    @DecimalMin(value = "0.00")
     private BigDecimal desconto;
-
-    @JsonIgnore
-    public Pedido getPedido() {
-        return id.getPedido();
-    }
-
 
     public Produto getProduto() {
         return id.getProduto();
+    }
+
+    @JsonIgnore
+    public Pedido getPedido() {
+
+        return id.getPedido();
+    }
+
+    public void setPedido(Pedido pedido) { id.setPedido(pedido);}
+
+
+
+
+
+    public void setProduto(Produto produto) {
+        id.setProduto(produto );
     }
 
 
@@ -39,29 +53,23 @@ public class ItemPedido {
         this.quantidade = quantidade;
     }
 
-    public BigDecimal getValor() {
-        return this.valor;
+    public BigDecimal getPreco() {
+        return this.preco;
     }
 
 
-// explicar por que não precisamos deste método
-/*
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
+// explicar por que não precisamos deste método public void setValor(BigDecimal preco)
 
-*/
     @PrePersist
     private void prePersist() {
-        this.valor = id.getProduto().getPreco();
+        this.preco = id.getProduto().getPrecoAtual();
     }
 
+    @Transient
     public BigDecimal getSubTotal() {
-
-        return valor
+        return preco
                 .multiply(new BigDecimal(quantidade))
                 .subtract(desconto );
-
     }
 
     public BigDecimal getDesconto() {
@@ -83,5 +91,10 @@ public class ItemPedido {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void baixaEstoque(Integer quantidade) {
+        this.getProduto().baixaEstoque(quantidade );
+
     }
 }

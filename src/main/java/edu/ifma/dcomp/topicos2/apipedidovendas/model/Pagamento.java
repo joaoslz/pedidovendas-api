@@ -1,6 +1,9 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -12,9 +15,8 @@ public abstract class Pagamento {
     @Id
     private Integer id;
 
-    @JsonBackReference
-    @OneToOne
-    @JoinColumn(name = "pedido_id")
+    @JsonIgnore
+    @OneToOne @JoinColumn(name = "pedido_id")
     @MapsId
     private Pedido pedido;
 

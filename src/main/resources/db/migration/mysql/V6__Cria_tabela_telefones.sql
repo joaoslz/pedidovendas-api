@@ -4,3 +4,8 @@ CREATE TABLE telefones (
   PRIMARY KEY (cliente_id, numero),
   CONSTRAINT cliente_id FOREIGN KEY (cliente_id) REFERENCES cliente (id)
 );
+
+insert into telefones(cliente_id, numero) values (1, "987874564");
+insert into telefones(cliente_id, numero) values (1, "988457454");
+
+insert into telefones(cliente_id, numero) values (2, "983457422");
