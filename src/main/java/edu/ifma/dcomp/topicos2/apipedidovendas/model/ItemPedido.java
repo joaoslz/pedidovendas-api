@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ public class ItemPedido {
     @EmbeddedId
     private ItemPedidoPK id = new ItemPedidoPK();
 
-    @Min(value = 1)
+    @Positive
     private Integer quantidade;
 
     @DecimalMin(value = "0.01")
@@ -28,22 +29,21 @@ public class ItemPedido {
         return id.getProduto();
     }
 
+    //método de delegação
     @JsonIgnore
     public Pedido getPedido() {
-
         return id.getPedido();
     }
 
-    public void setPedido(Pedido pedido) { id.setPedido(pedido);}
+    //método de delegação
+    public void setPedido(Pedido pedido) {
+        id.setPedido(pedido);
+    }
 
-
-
-
-
+    // método de delegação
     public void setProduto(Produto produto) {
         id.setProduto(produto );
     }
-
 
     public Integer getQuantidade() {
         return quantidade;
@@ -57,8 +57,16 @@ public class ItemPedido {
         return this.preco;
     }
 
+    public BigDecimal getDesconto() {
+        return desconto;
+    }
 
-// explicar por que não precisamos deste método public void setValor(BigDecimal preco)
+    public void setDesconto(BigDecimal desconto) {
+        this.desconto = desconto;
+    }
+
+// explicar por que não precisamos deste método public
+// void setValor(BigDecimal preco)
 
     @PrePersist
     private void prePersist() {
@@ -72,12 +80,9 @@ public class ItemPedido {
                 .subtract(desconto );
     }
 
-    public BigDecimal getDesconto() {
-        return desconto;
-    }
-
-    public void setDesconto(BigDecimal desconto) {
-        this.desconto = desconto;
+    //Méotodo de delegação
+    public void baixaEstoque(Integer quantidade) {
+        this.getProduto().baixaEstoque(quantidade );
     }
 
     @Override
@@ -93,8 +98,4 @@ public class ItemPedido {
         return Objects.hash(id);
     }
 
-    public void baixaEstoque(Integer quantidade) {
-        this.getProduto().baixaEstoque(quantidade );
-
-    }
 }

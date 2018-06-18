@@ -7,6 +7,9 @@ import edu.ifma.dcomp.topicos2.apipedidovendas.repository.CategoriaRepository;
 import edu.ifma.dcomp.topicos2.apipedidovendas.repository.ProdutoRepository;
 import edu.ifma.dcomp.topicos2.apipedidovendas.repository.filter.ProdutoFiltro;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +29,7 @@ public class ProdutoService  {
        this.produtoRepository = produtoRepository;
        this.categoriaRepository = categoriaRepository;
 
-       this.genericoService = new GenericoService<Produto>(produtoRepository );
+       this.genericoService = new GenericoService<Produto>(produtoRepository);
    }
 
    @Transactional
@@ -65,9 +68,6 @@ public class ProdutoService  {
                 .orElse(new ArrayList<>() );
     }
 
-    public List<Produto> pesquisa(ProdutoFiltro filtro) {
-        return produtoRepository.filtrar(filtro );
-    }
 
 
     @Transactional
@@ -83,4 +83,17 @@ public class ProdutoService  {
     }
 
 
+    public Page<Produto> buscaPaginada(Pageable pageable) {
+       return produtoRepository.findAll(pageable );
+    }
+
+    public List<Produto> pesquisa(ProdutoFiltro filtro) {
+
+       return produtoRepository.filtrar(filtro );
+    }
+
+    public Page<Produto> pesquisa(ProdutoFiltro filtro, Pageable pageable) {
+        return produtoRepository.filtrar(filtro, pageable );
+
+    }
 }

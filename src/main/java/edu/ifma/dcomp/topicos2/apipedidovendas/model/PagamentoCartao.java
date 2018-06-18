@@ -3,6 +3,8 @@ package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
 
@@ -11,6 +13,7 @@ import java.time.LocalDate;
 public final class PagamentoCartao extends Pagamento {
 
     @Column(name = "numero_parcelas")
+    @Positive
     private Short numeroDeParcelas;
 
     public Short getNumeroDeParcelas() {

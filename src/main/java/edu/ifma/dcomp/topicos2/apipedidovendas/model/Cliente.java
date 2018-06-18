@@ -45,9 +45,10 @@ public class Cliente {
     @ElementCollection
     @CollectionTable(
             name = "telefones",
-            joinColumns = @JoinColumn(name = "cliente_id") )
+            joinColumns = @JoinColumn(name = "cliente_id")
+    )
     @Column(name = "numero")
-    private Set<String> telefones = new LinkedHashSet<>();
+    private Set<@NotEmpty String> telefones = new LinkedHashSet<>();
     //private List<String> telefones;
 
 
@@ -112,6 +113,13 @@ public class Cliente {
         this.enderecos.add(endereco );
     }
 
+    public Set<String> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(Set<String> telefones) {
+        this.telefones = telefones;
+    }
 
     @Override
     public boolean equals(Object o) {

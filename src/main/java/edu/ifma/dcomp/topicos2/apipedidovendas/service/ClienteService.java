@@ -45,25 +45,18 @@ public class ClienteService {
 
     @Transactional(readOnly = true)
     public List<Cliente> obterTodosClientes() {
-
         return genericoService.buscaTodasAsEntities();
     }
 
 
     @Transactional
     public void excluir(Integer id) {
-
         this.genericoService.excluir(id );
     }
 
 
     @Transactional
     public Cliente atualiza(Integer id, Cliente cliente) {
-        Cliente clienteManager = this.buscaPor(id );
-
-        BeanUtils.copyProperties(cliente, clienteManager, "id" );
-        this.salva(clienteManager );
-
-        return clienteManager;
+       return this.genericoService.atualiza(cliente, id);
     }
 }

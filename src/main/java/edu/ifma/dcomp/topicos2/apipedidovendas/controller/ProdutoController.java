@@ -7,6 +7,9 @@ import edu.ifma.dcomp.topicos2.apipedidovendas.repository.filter.ProdutoFiltro;
 import edu.ifma.dcomp.topicos2.apipedidovendas.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,8 +34,21 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
-/*  @GetMapping
-    public List<Produto> todosProdutos( ) {   return produtoService.todos();  } */
+/*
+    @GetMapping("/todos")
+    public Page<Produto> todosProdutos(Integer pagina, Integer tamanho ) {
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+
+        return produtoService.buscaPaginada(pageRequest );
+    }
+*/
+
+
+    @GetMapping("/todos")
+    public Page<Produto> todosProdutos(Pageable pageable  ) {
+        return produtoService.buscaPaginada(pageable );
+    }
+
 
 
     @GetMapping
@@ -41,10 +57,17 @@ public class ProdutoController {
     }
 
 
+    @GetMapping("/paginacao")
+    public Page<Produto> pesquisarComPaginacao(ProdutoFiltro filtro, Pageable pageable) {
+        return produtoService.pesquisa(filtro, pageable);
+    }
+
+
     @GetMapping("/buscapornome")
     public List<Produto> buscaPeloNome(@RequestParam String nome ) {
         return produtoService.buscaPor(nome );
     }
+
 
     @PostMapping
     public ResponseEntity<?> cria(@Validated @RequestBody Produto produto,
@@ -52,8 +75,8 @@ public class ProdutoController {
 
         Produto produtoSalvo = produtoService.salva(produto );
 
-        //vamos usar um evento da aplicação (RecursoCriadoEvent) para adicionar o header_location no cabeçalho da resposta
-
+        //vamos usar um evento da aplicação (RecursoCriadoEvent) para adicionar o
+        // header_location no cabeçalho da resposta
         publisher.publishEvent( new RecursoCriadoEvent(this, response, produtoSalvo.getId() ));
 
         return  ResponseEntity
@@ -64,9 +87,9 @@ public class ProdutoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Produto> atualiza(@PathVariable Integer id,
-                                               @Validated @RequestBody Produto produto ) {
-        Produto categoriaManager = produtoService.atualiza(id, produto );
-        return ResponseEntity.ok(categoriaManager );
+                                            @Validated @RequestBody Produto produto ) {
+        Produto produtoManager = produtoService.atualiza(id, produto );
+        return ResponseEntity.ok(produtoManager );
     }
 
 
@@ -75,7 +98,6 @@ public class ProdutoController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void atualizaAtributoAtivo(@PathVariable Integer id, @RequestBody Boolean ativo) {
             produtoService.atualizaAtributoAtivo(id, ativo);
-
     }
 
 

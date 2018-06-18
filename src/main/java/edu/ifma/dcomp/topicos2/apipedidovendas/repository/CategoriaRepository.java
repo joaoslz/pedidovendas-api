@@ -9,7 +9,11 @@ package edu.ifma.dcomp.topicos2.apipedidovendas.repository;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
-
     Categoria findByNome(String nome);
-
 }
+
+
+
+
+
+

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -29,11 +30,13 @@ public class Pedido {
     private String observacoes;
 
 
+    @DecimalMin(value = "0.00")
     @Column(name = "valor_desconto")
     private BigDecimal valorDesconto;
 
     @NotNull
     @Column(name = "valor_frete")
+    @DecimalMin(value = "0.00")
     private BigDecimal valorFrete;
 
     @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)

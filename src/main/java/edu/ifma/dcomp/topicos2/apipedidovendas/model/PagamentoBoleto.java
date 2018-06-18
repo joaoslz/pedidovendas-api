@@ -3,6 +3,7 @@ package edu.ifma.dcomp.topicos2.apipedidovendas.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
 @Entity
@@ -12,6 +13,7 @@ public final class PagamentoBoleto extends Pagamento {
     @Column(name = "data_vencimento")
     private LocalDate dataVencimento;
 
+    @PastOrPresent
     @Column(name = "data_pagamento")
     private LocalDate dataPagamento;
 
