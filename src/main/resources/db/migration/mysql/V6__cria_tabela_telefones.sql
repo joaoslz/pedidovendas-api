@@ -3,7 +3,7 @@ CREATE TABLE telefones (
   numero VARCHAR(15) NOT NULL,
   PRIMARY KEY (cliente_id, numero),
   CONSTRAINT cliente_id FOREIGN KEY (cliente_id) REFERENCES cliente (id)
-);
+)ENGINE = InnoDB;
 
 insert into telefones(cliente_id, numero) values (1, "987874564");
 insert into telefones(cliente_id, numero) values (1, "988457454");
