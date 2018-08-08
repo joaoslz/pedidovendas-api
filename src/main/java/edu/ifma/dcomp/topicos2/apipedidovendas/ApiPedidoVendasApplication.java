@@ -1,15 +1,10 @@
 package edu.ifma.dcomp.topicos2.apipedidovendas;
 
-import edu.ifma.dcomp.topicos2.apipedidovendas.model.Categoria;
-import edu.ifma.dcomp.topicos2.apipedidovendas.model.Produto;
-import edu.ifma.dcomp.topicos2.apipedidovendas.service.CategoriaService;
-import edu.ifma.dcomp.topicos2.apipedidovendas.service.ProdutoService;
-import org.springframework.beans.factory.annotation.Autowired;
+//import edu.ifma.dcomp.topicos2.apipedidovendas.security.utils.GeradorDeSenhasBcrypt;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.math.BigDecimal;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class ApiPedidoVendasApplication {
@@ -18,5 +13,22 @@ public class ApiPedidoVendasApplication {
 
        SpringApplication.run(ApiPedidoVendasApplication.class, args);
     }
+
+
+  /*  @Bean
+    public CommandLineRunner commandLineRunner() {
+       return args -> {
+           String senhaCriptografada = GeradorDeSenhasBcrypt.gerarBCrypt("asdf");
+           System.out.println("### Senha criptografada " + senhaCriptografada );
+
+           senhaCriptografada = GeradorDeSenhasBcrypt.gerarBCrypt("asdf");
+           System.out.println("### Senha criptografada " + senhaCriptografada );
+
+
+           System.out.println("### Senha é válida ? "
+                + GeradorDeSenhasBcrypt.senhaValida("asdf", senhaCriptografada));
+       };
+    }
+*/
 
 }
