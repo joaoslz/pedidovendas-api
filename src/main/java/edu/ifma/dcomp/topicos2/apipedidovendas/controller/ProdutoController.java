@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.List;
 
+@CrossOrigin(origins = { "http://localhost:4200" } )
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutoController {
@@ -34,15 +35,6 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
-/*
-    @GetMapping("/todos")
-    public Page<Produto> todosProdutos(Integer pagina, Integer tamanho ) {
-        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
-
-        return produtoService.buscaPaginada(pageRequest );
-    }
-*/
-
 
     @GetMapping("/todos")
     public Page<Produto> todosProdutos(Pageable pageable  ) {
@@ -50,10 +42,15 @@ public class ProdutoController {
     }
 
 
-
     @GetMapping
     public List<Produto> pesquisar(ProdutoFiltro filtro) {
         return produtoService.pesquisa(filtro);
+    }
+
+
+    @GetMapping("/{id}")
+    public Produto buscaPor(@PathVariable Integer id ) {
+       return produtoService.buscaPor(id );
     }
 
 

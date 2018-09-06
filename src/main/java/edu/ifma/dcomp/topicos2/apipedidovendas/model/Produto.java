@@ -27,8 +27,8 @@ public class Produto implements Serializable {
     @NotNull
     private Boolean ativo;
 
-    @Transient
     @NotNull @Min(0)
+    @Column(name = "quantidade_estoque")
     private Integer quantidadeEstoque;
 
     @ManyToMany

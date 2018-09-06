@@ -7,6 +7,7 @@ import edu.ifma.dcomp.topicos2.apipedidovendas.repository.CategoriaRepository;
 import edu.ifma.dcomp.topicos2.apipedidovendas.repository.ProdutoRepository;
 import edu.ifma.dcomp.topicos2.apipedidovendas.repository.filter.ProdutoFiltro;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -95,5 +96,12 @@ public class ProdutoService  {
     public Page<Produto> pesquisa(ProdutoFiltro filtro, Pageable pageable) {
         return produtoRepository.filtrar(filtro, pageable );
 
+    }
+
+    public Produto buscaPor(Integer id) {
+        Optional<Produto> optionalProduto = produtoRepository.findById(id );
+
+        return optionalProduto
+                .orElseThrow( () ->new EmptyResultDataAccessException(1 ) );
     }
 }
